@@ -1,0 +1,10 @@
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0
+ARG TARGETARCH
+WORKDIR /app
+ENV ASPNETCORE_ENVIRONMENT Development
+ENV ASPNETCORE_KESTREL__ENDPOINTS__HTTP__URL=http://+:8080
+COPY *.csproj .
+RUN dotnet restore -a $TARGETARCH
+COPY . .
+EXPOSE 8080
+CMD ["dotnet", "watch"]

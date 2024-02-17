@@ -1,0 +1,34 @@
+name: nextjs-prod
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    environment:
+      - UI_URL=http://localhost:3000
+    ports:
+      - 8000:8080
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080/HealthCheck || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+  ui:
+    container_name: ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s

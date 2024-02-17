@@ -1,0 +1,10 @@
+Dockerfile*
+.dockerignore*
+
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+**/*.md
